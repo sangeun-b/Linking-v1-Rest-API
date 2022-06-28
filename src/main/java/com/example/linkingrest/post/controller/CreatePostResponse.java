@@ -1,16 +1,13 @@
-package com.example.linkingrest.user.controller;
+package com.example.linkingrest.post.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@EqualsAndHashCode
-public class CreateUserResponse {
+public class CreatePostResponse {
 
     private Long id;
-
 }

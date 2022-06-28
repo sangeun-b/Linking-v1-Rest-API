@@ -5,9 +5,11 @@ import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,14 +46,11 @@ public class UserController {
     public ResponseEntity updateUser(@RequestBody UpdateUserRequest request, @PathVariable("id") Long id,
                                                    @RequestParam(value = "img", required = false) MultipartFile file){
         User findUser = userService.findById(id);
-        if(request.getName().isEmpty()){
-           request.setName(findUser.getName());
-        }else if(request.getPassword().isEmpty()){
-            request.setPassword(findUser.getPassword());
-        }else if(file == null){
-            request.setImg(findUser.getImg());
-        }
-        userService.updateUser(request.toEntity(), id, file);
+        String name = request.getName()==null || request.getName().isBlank() ? findUser.getName():request.getName();
+        String password = request.getPassword()==null || request.getPassword().isBlank() ?findUser.getPassword():request.getPassword();
+        String img = request.getImg()==null || request.getImg().isBlank()?findUser.getImg(): request.getImg();
+        UpdateUserRequest newUser = UpdateUserRequest.builder().name(name).password(password).img(img).build();
+        userService.updateUser(newUser.toEntity(), id, file);
         return ResponseEntity.ok().build();
     }
 

@@ -5,6 +5,7 @@ import com.example.linkingrest.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,13 +28,13 @@ public class UserService {
 
     private void validationDuplicateEmail(User user){
         List<User> findUser = userRepository.findByEmail(user.getEmail());
-        if(findUser != null){
+        if(!findUser.isEmpty()){
             throw new IllegalStateException("이미 등록된 이메일 입니다.");
         }
     }
     private void validationDuplicateName(User user){
         List<User> findUser = userRepository.findByName(user.getName());
-        if(findUser!=null){
+        if(!findUser.isEmpty()){
             throw new IllegalStateException("이미 등록된 이름 입니다.");
         }
     }
@@ -50,7 +51,7 @@ public class UserService {
         validationDuplicateName(request);
         User user = findById(id);
         // 이미지 파일 업로드 후 -> path 넣어주기
-        user.update(request.getName(),request.getPassword(),request.getImg());
+        user.updateUser(request.getName(),request.getPassword(),request.getImg());
 
     }
     @Transactional
