@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
 public class UserResponse {
 
     private Long id;

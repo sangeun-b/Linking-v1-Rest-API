@@ -2,6 +2,7 @@ package com.example.linkingrest.user.controller;
 
 import com.example.linkingrest.user.domain.User;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class CreateUserRequest {
 
     @NotEmpty

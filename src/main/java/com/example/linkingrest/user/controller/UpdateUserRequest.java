@@ -1,20 +1,17 @@
 package com.example.linkingrest.user.controller;
 
 import com.example.linkingrest.user.domain.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateUserRequest {
 
-    @NotEmpty
     private String name;
 
-    @NotEmpty
     private String password;
 
     private String img;
