@@ -1,5 +1,6 @@
 package com.example.linkingrest.user.domain;
 
+import com.example.linkingrest.comment.domain.Comment;
 import com.example.linkingrest.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,15 +31,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Comment> commnets = new ArrayList<>();
+
     @Builder
-    public User(Long id, String name, String email, String password, String img, List<Post> posts) {
+    public User(Long id, String name, String email, String password, String img, List<Post> posts, List<Comment> commnets) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.img = img;
         this.posts = posts;
+        this.commnets = commnets;
     }
+
     public void updateUser(String name, String password, String img){
         this.name = name;
         this.password = password;

@@ -54,6 +54,12 @@ public class Post {
         return post;
 
     }
+    public void updatePost(String title, String content, int price, String quantity) {
+        this.title = title;
+        this.content = content;
+        this.price = price;
+        this.quantity = quantity;
+    }
 
 
 }
