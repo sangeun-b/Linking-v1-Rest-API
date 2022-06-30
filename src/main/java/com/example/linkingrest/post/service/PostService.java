@@ -27,11 +27,26 @@ public class PostService {
         return savePost.getId();
     }
 
-    public List<Post> findPostsByType(PostType postType){
+    public List<Post> findPostsByType(String type){
+        PostType postType = PostType.valueOf(type);
         return postRepository.findByPostType(postType);
     }
-    public Post findById(Long id){
+    public Post findPostById(Long id){
         return postRepository.findById(id).orElseThrow();
+    }
+
+    @Transactional
+    public void updatePost(Post post,Long id){
+        post.updatePost(post.getTitle(),post.getContent(),post.getPrice(),post.getQuantity());
+    }
+    @Transactional
+    public void deletePost(Long id){
+        Post post = findPostById(id);
+        postRepository.delete(post);
+    }
+    public List<Post> findPostByKeyword(String keyword){
+        return postRepository.findByTitleContainingOrContentContaining(keyword,keyword);
+
     }
 
 }
