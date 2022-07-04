@@ -2,6 +2,7 @@ package com.example.linkingrest.post.controller;
 
 import com.example.linkingrest.post.domain.Post;
 import com.example.linkingrest.post.service.PostService;
+import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
 
-    @PostMapping("/new/{userId}")
+    @PostMapping("/new/user/{userId}")
     public ResponseEntity<CreatePostResponse> savePost(@PathVariable("userId") Long userId, @RequestBody CreatePostRequest request){
         Long id = postService.savePost(request.toEntity(),userId);
         return ResponseEntity.ok(new CreatePostResponse(id));
@@ -30,7 +31,7 @@ public class PostController {
         return ResponseEntity.ok(new PostResponse(post.getId(),post.getTitle(),post.getContent(),post.getPrice(),post.getQuantity(),post.getPostType(),post.getUser().getId()));
     }
 
-    @GetMapping("/{type}")
+    @GetMapping("type/{type}")
     public ResponseEntity<PostResponse.Result> findByType(@PathVariable("type") String type) {
         List<Post> findPosts = postService.findPostsByType(type);
         List<PostResponse> collect = findPosts.stream()
@@ -41,11 +42,12 @@ public class PostController {
     }
     @PatchMapping("/{id}")
     public ResponseEntity updatePost(@PathVariable("id") Long id, @RequestBody UpdatePostRequest request){
-        Post findPost = postService.findPostById(id);
+
 //        String title = request.getTitle() == null ? findPost.getTitle():request.getTitle();
 //        String content = request.getContent() == null? findPost.getContent() : request.getContent();
 //        Integer price = request.getPrice()==null? findPost.getPrice() : request.getPrice();
         postService.updatePost(request.toEntity(), id);
+        Post findPost = postService.findPostById(id);
         return ResponseEntity.ok().build();
     }
     @DeleteMapping("/{id}")

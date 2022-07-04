@@ -1,5 +1,7 @@
 package com.example.linkingrest.post.domain;
 
+import com.example.linkingrest.bookmark.domain.Bookmark;
+import com.example.linkingrest.comment.domain.Comment;
 import com.example.linkingrest.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +35,12 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "post")
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Post(Long id, String title, String content, int price, String quantity, PostType postType, User user) {

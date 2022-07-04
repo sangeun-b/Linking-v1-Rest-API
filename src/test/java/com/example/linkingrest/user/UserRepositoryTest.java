@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 public class UserRepositoryTest {
@@ -100,5 +101,23 @@ public class UserRepositoryTest {
             assertEquals(user.getEmail(), findUser.getEmail());
         }
     }
+    @DisplayName("회원 삭제")
+    @Test
+    public void deleteUser() {
+        User user = User.builder()
+                .name("user2")
+                .email("user1@email.com")
+                .password("12345")
+                .img(null)
+                .build();
+        userRepository.save(user);
+
+        userRepository.delete(user);
+
+        assertEquals(userRepository.findAll().size(),0);
+    }
+
+
+
 }
 

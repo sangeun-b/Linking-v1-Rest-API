@@ -12,6 +12,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +27,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class UserServiceTest {
 
-    @InjectMocks
+    @Autowired
     UserService userService;
-    @Mock
+    @Autowired
     UserRepository userRepository;
 
     private final User user = User.builder()
@@ -37,6 +42,7 @@ public class UserServiceTest {
             .img(null)
             .posts(null)
             .build();
+
     private final CreateUserRequest userRequest = CreateUserRequest.builder()
             .email("user1@email.com")
             .password("12345")
@@ -56,7 +62,8 @@ public class UserServiceTest {
             Long savedId = userService.join(userRequest.toEntity());
             //then
             verify(userRepository,atLeastOnce()).save(any(User.class));
-            assertEquals(1L,user.getId());
+
+            assertEquals(userRepository.findAll().size(),1);
 
         }
         @DisplayName("이름이 중복이면 실패")
@@ -111,15 +118,18 @@ public class UserServiceTest {
         @DisplayName("모든 회원 목록 조회")
         @Test
         void findAll(){
-            final User user1 = User.builder()
+            User user1 = User.builder()
                     .email("user1@email.com")
                     .password("12345")
                     .name("user1")
                     .img(null)
                     .build();
 
+            userService.join(user1);
+
             List<User> users = userService.findUsers();
             assertEquals(users.size(), 1);
         }
     }
+
 }
