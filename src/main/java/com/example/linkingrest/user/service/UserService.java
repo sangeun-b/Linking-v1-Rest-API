@@ -42,6 +42,7 @@ public class UserService {
     public List<User> findUsers(){
         return userRepository.findAll();
     }
+
     public User findById(Long id){
         return userRepository.findById(id).orElseThrow(()-> new IllegalStateException("존재 하지 않는 회원입니다."));
     }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,8 @@ public class UserController {
     @PostMapping("/new")
     public ResponseEntity<CreateUserResponse> saveUser(@RequestBody CreateUserRequest request){
         Long id = userService.join(request.toEntity());
-        return ResponseEntity.ok(new CreateUserResponse(id));
+//        return ResponseEntity.ok(new CreateUserResponse(id));
+        return ResponseEntity.created(URI.create("/users/"+id)).body(new CreateUserResponse(id));
     }
 
     @GetMapping("")
@@ -51,7 +53,7 @@ public class UserController {
         String img = request.getImg()==null || request.getImg().isBlank()?findUser.getImg(): request.getImg();
         UpdateUserRequest newUser = UpdateUserRequest.builder().name(name).password(password).img(img).build();
         userService.updateUser(newUser.toEntity(), id, file);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("회원 수정 성공");
     }
 
     @DeleteMapping("/{id}")

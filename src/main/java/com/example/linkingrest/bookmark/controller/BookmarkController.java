@@ -15,13 +15,13 @@ public class BookmarkController {
 
     private final BookmarkService bookmarkService;
 
-    @PostMapping("/new")
-    public BookmarkResponse saveBookmark(@RequestBody BookmarkRequest request){
-        Long id = bookmarkService.saveBookmark(request.toEntity());
+    @PostMapping("/new/user/{userId}/post/{postId}")
+    public BookmarkResponse saveBookmark(@PathVariable("userId") Long userId, @PathVariable("postId") Long postId){
+        Long id = bookmarkService.saveBookmark(userId, postId);
         return  new BookmarkResponse(id);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public BookmarkResponse.Result findBookmarksByUser(@PathVariable("userId") Long userId){
         List<Bookmark> findBookmarks = bookmarkService.findBookmarksByUser(userId);
         List<BookmarkResponse> collect = findBookmarks.stream()

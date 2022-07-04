@@ -33,4 +33,13 @@ public class Bookmark {
         this.user = user;
         this.post = post;
     }
+
+    public void setUser(User user){
+        this.user = user;
+        user.getBookmarks().add(this);
+    }
+    public void setPost(Post post){
+        this.post = post;
+        post.getBookmarks().add(this);
+    }
 }

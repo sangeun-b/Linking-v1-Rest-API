@@ -8,7 +8,10 @@ import com.example.linkingrest.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 
 @Service
@@ -21,7 +24,7 @@ public class PostService {
 
     @Transactional
     public Long savePost(Post post, Long userId){
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId).orElseThrow();
         Post savePost = Post.createPost(post,user);
         postRepository.save(savePost);
         return savePost.getId();
@@ -31,13 +34,15 @@ public class PostService {
         PostType postType = PostType.valueOf(type);
         return postRepository.findByPostType(postType);
     }
+
     public Post findPostById(Long id){
         return postRepository.findById(id).orElseThrow();
     }
 
     @Transactional
     public void updatePost(Post post,Long id){
-        post.updatePost(post.getTitle(),post.getContent(),post.getPrice(),post.getQuantity());
+        Post findPost = postRepository.findById(id).orElseThrow();
+        findPost.updatePost(post.getTitle(),post.getContent(),post.getPrice(),post.getQuantity());
     }
     @Transactional
     public void deletePost(Long id){
