@@ -6,6 +6,7 @@ import com.example.linkingrest.config.security.dto.TokenRequest;
 import com.example.linkingrest.config.security.service.SecurityService;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.service.UserService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,10 +21,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@Api(tags = {"USER API V1"})
 public class UserController {
 
     private final UserService userService;
-    private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
     private final SecurityService securityService;
 
