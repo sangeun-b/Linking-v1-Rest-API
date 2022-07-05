@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 ### ignore yml file ###
 application-db.yml
+application-jwt.yml
 ### STS ###
 .apt_generated
 .classpath
