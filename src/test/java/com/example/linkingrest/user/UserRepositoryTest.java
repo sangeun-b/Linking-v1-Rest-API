@@ -74,11 +74,10 @@ public class UserRepositoryTest {
                     .build();
             userRepository.save(user);
             //when
-            List<User> userList = userRepository.findByName(user.getName());
+            User findUser = userRepository.findByName(user.getName()).orElseThrow();
 
             //then
-            User findUser = userList.get(0);
-            assertEquals(userList.size(), 1);
+            assertEquals(1L, findUser.getId());
             assertEquals(user.getName(), findUser.getName());
         }
         @DisplayName("회원 이메일 조회 성공")
@@ -93,11 +92,10 @@ public class UserRepositoryTest {
                     .build();
             userRepository.save(user);
             //when
-            List<User> userList = userRepository.findByEmail(user.getEmail());
+            User findUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
 
             //then
-            User findUser = userList.get(0);
-            assertEquals(userList.size(), 1);
+            assertEquals(1L, findUser.getId());
             assertEquals(user.getEmail(), findUser.getEmail());
         }
     }

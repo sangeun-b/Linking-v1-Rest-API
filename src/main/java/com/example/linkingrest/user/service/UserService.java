@@ -1,8 +1,11 @@
 package com.example.linkingrest.user.service;
 
+import com.example.linkingrest.exception.EmailLoginFailedCException;
+import com.example.linkingrest.user.domain.Role;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -17,24 +20,33 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Long join(User user){
+        System.out.println(user);
         validationDuplicateEmail(user);
         validationDuplicateName(user);
         userRepository.save(user);
         return user.getId();
     }
 
+    public User login(String email, String password){
+        User user = userRepository.findByEmail(email).orElseThrow(EmailLoginFailedCException::new);
+        if(!passwordEncoder.matches(password,user.getPassword()))
+            throw new EmailLoginFailedCException();
+        return user;
+    }
+
     private void validationDuplicateEmail(User user){
-        List<User> findUser = userRepository.findByEmail(user.getEmail());
-        if(!findUser.isEmpty()){
+        User findUser = userRepository.findByEmail(user.getEmail()).orElse(null);
+        if(findUser != null){
             throw new IllegalStateException("이미 등록된 이메일 입니다.");
         }
     }
     private void validationDuplicateName(User user){
-        List<User> findUser = userRepository.findByName(user.getName());
-        if(!findUser.isEmpty()){
+        User findUser = userRepository.findByName(user.getName()).orElse(null);
+        if(findUser != null){
             throw new IllegalStateException("이미 등록된 이름 입니다.");
         }
     }

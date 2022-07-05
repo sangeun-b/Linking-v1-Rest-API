@@ -59,8 +59,11 @@ public class Post {
     }
     public static Post createPost(Post post, User user){
         post.setUser(user);
-        //만약 user가 mentor이면 post type -> mentee, mentee이면 post type->mentor
-        post.postType = PostType.FIND_MENTEE;
+        if(user.getRole().equals("ROLE_MENTOR")){
+            post.postType = PostType.FIND_MENTEE;
+        } else if(user.getRole().equals("ROLE_MENTEE")){
+            post.postType = PostType.FIND_MENTOR;
+        }
         return post;
 
     }
