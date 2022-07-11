@@ -7,6 +7,8 @@ import com.example.linkingrest.config.security.service.SecurityService;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +30,9 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final SecurityService securityService;
 
+    @ApiOperation(value = "회원 가입", notes = "새 회원 추가")
     @PostMapping("/register")
-    public ResponseEntity<CreateUserResponse> saveUser(@RequestBody @Valid CreateUserRequest request){
+    public ResponseEntity<CreateUserResponse> saveUser(@RequestBody @ApiParam(value = "회원 가입에 필요한 정보", required = true) @Valid CreateUserRequest request){
         CreateUserRequest createUserRequest = CreateUserRequest.builder()
                 .email(request.getEmail())
                 .name(request.getName())
@@ -42,13 +45,15 @@ public class UserController {
         return ResponseEntity.created(URI.create("/users/"+id)).body(new CreateUserResponse(id));
     }
 
+    @ApiOperation(value = "로그인", notes = "Spring Security 를 이용한 로그인")
     @GetMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginUserRequest request){
+    public ResponseEntity<TokenDto> login(@RequestBody @ApiParam(value = "로그인에 필요한 이메일과 비밀번호", required = true) @Valid LoginUserRequest request){
         TokenDto token = securityService.login(request);
         return ResponseEntity.ok(token);
     }
+    @ApiOperation(value = "Token 재발급", notes = "Refresh Token 재발급")
     @PostMapping("/re-issue")
-    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequest request) throws Exception {
+    public ResponseEntity<TokenDto> reissue(@RequestBody @ApiParam(value = "Refresh Token 재발급에 필요한 정보(access token, refresh token)") TokenRequest request) throws Exception {
         return ResponseEntity.ok(securityService.reissue(request));
     }
     @GetMapping()

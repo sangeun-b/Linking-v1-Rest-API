@@ -5,6 +5,7 @@ import com.example.linkingrest.user.domain.Role;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Enumeration;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -88,10 +90,22 @@ public class JwtProvider {
     }
 
     // HTTP Request의 Header에서 Token parsing -> "X-AUTH-TOKEN: jwt"
-    public String resolveToken(HttpServletRequest request){
-        return request.getHeader("X-AUTH-TOKEN");
-    }
+//    public String resolveToken(HttpServletRequest request){
+//        return request.getHeader("X-AUTH-TOKEN");
+//    }
 
+    // http request header에서 token 추출
+    public String extract(HttpServletRequest request, String type){
+        Enumeration<String> headers = request.getHeaders("Authorization");
+        log.info("jwt:", headers);
+        while (headers.hasMoreElements()){
+            String value = headers.nextElement();
+            if(value.toLowerCase().startsWith(type.toLowerCase())){
+                return value.substring(type.length()).trim();
+            }
+        }
+        return Strings.EMPTY;
+    }
     // JWT 의 유효성 및 만료일자 확인
     public boolean validationToken(String token){
         try{

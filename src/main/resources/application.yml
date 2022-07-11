@@ -12,6 +12,24 @@ spring:
         format_sql: true
   profiles:
     include: jws
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+# 카카오 로그인 연결
+social:
+  kakao:
+    client-id: {REST_API_PRIVATE_KEY}
+    redirect: /oauth/kakao/redirect
+    url:
+      login: https://kauth.kakao.com/oauth/authorize
+      token: https://kauth.kakao.com/oauth/token
+      profile: https://kapi.kakao.com/v2/user/me
+      unlink: https://kapi.kakao.com/v1/user/unlink
+
+url:
+  base: http://localhost:8080
+
 
 logging:
   level:
