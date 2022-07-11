@@ -27,12 +27,12 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.linking.linkingrest"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
+        return new Docket(DocumentationType.SWAGGER_2);
+//                .select()
+//                .apis(RequestHandlerSelectors.basePackage("com.example.linking.linkingrest"))
+//                .paths(PathSelectors.any())
+//                .build()
+//                .apiInfo(apiInfo());
     }
 
     public ApiInfo apiInfo() {
@@ -43,24 +43,24 @@ public class SwaggerConfig {
                 .license("Stella")
                 .build();
     }
-    private ApiKey apiKey(){
-        return new ApiKey("JWT","X-AUTH-TOKEN","header"); //X-AUTH-TOKEN
-    }
-    private SecurityContext securityContext(){
-        return springfox
-                .documentation
-                .spi
-                .service
-                .contexts
-                .SecurityContext
-                .builder()
-                .securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build();
-
-    }
-    List<SecurityReference> defaultAuth(){
-        AuthorizationScope authorizationScope = new AuthorizationScope("global","access_everything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("JWT",authorizationScopes));
-    }
+//    private ApiKey apiKey(){
+//        return new ApiKey("JWT","X-AUTH-TOKEN","header"); //X-AUTH-TOKEN
+//    }
+//    private SecurityContext securityContext(){
+//        return springfox
+//                .documentation
+//                .spi
+//                .service
+//                .contexts
+//                .SecurityContext
+//                .builder()
+//                .securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build();
+//
+//    }
+//    List<SecurityReference> defaultAuth(){
+//        AuthorizationScope authorizationScope = new AuthorizationScope("global","access_everything");
+//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+//        authorizationScopes[0] = authorizationScope;
+//        return Arrays.asList(new SecurityReference("JWT",authorizationScopes));
+//    }
 }
