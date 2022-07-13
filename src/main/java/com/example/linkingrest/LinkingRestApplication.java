@@ -15,11 +15,6 @@ public class LinkingRestApplication {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // 카카오와 통신 필요
-    @Bean
-    public RestTemplate getRestTemplate(){
-        return new RestTemplate();
-    }
     public static void main(String[] args) {
         SpringApplication.run(LinkingRestApplication.class, args);
     }

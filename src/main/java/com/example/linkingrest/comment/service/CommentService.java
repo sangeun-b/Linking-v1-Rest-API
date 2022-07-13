@@ -6,6 +6,9 @@ import com.example.linkingrest.post.domain.Post;
 import com.example.linkingrest.post.repository.PostRepository;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
+import error.exception.CommentNotFoundException;
+import error.exception.PostNotFoundException;
+import error.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +26,8 @@ public class CommentService {
 
     @Transactional
     public Long saveComment(Comment comment,Long userId,Long postId){
-        User user = userRepository.findById(userId).orElseThrow();
-        Post post = postRepository.findById(postId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         comment.setUser(user);
         comment.setPost(post);
         commentRepository.save(comment);
@@ -36,16 +39,16 @@ public class CommentService {
     }
 
     public Comment findById(Long id){
-        return commentRepository.findById(id).orElseThrow();
+        return commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
     }
     @Transactional
     public void updateComment(Comment comment,Long id){
-        Comment findComment = commentRepository.findById(id).orElseThrow();
+        Comment findComment = commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
         findComment.updateComment(comment.getContent(),comment.getRate());
     }
     @Transactional
     public void deleteComment(Long id){
-        Comment comment = commentRepository.findById(id).orElseThrow();
+        Comment comment = commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
         commentRepository.delete(comment);
     }
 

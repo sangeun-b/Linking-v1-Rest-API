@@ -40,7 +40,6 @@ public class UserServiceTest {
             .password("12345")
             .name("user1")
             .img(null)
-            .posts(null)
             .build();
 
     private final CreateUserRequest userRequest = CreateUserRequest.builder()

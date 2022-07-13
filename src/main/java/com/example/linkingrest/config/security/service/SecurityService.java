@@ -2,7 +2,7 @@ package com.example.linkingrest.config.security.service;
 
 import com.example.linkingrest.config.security.JwtProvider;
 import com.example.linkingrest.config.security.RefreshTokenRepository;
-import com.example.linkingrest.exception.EmailLoginFailedCException;
+import error.exception.EmailLoginFailedException;
 import com.example.linkingrest.config.security.domain.RefreshToken;
 import com.example.linkingrest.config.security.dto.TokenDto;
 import com.example.linkingrest.config.security.dto.TokenRequest;
@@ -31,10 +31,10 @@ public class SecurityService {
     public TokenDto login(LoginUserRequest request) {
         // 회원 존재 확인
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(EmailLoginFailedCException::new);
+                .orElseThrow(EmailLoginFailedException::new);
         // 비밀번호 확인
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
-            throw new EmailLoginFailedCException();
+            throw new EmailLoginFailedException();
 
         // Access token, refresh token 발급
         TokenDto tokenDto = jwtProvider.createTokenDto(user.getId(),user.getRole());

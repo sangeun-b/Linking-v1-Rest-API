@@ -5,6 +5,8 @@ import com.example.linkingrest.post.domain.PostType;
 import com.example.linkingrest.post.repository.PostRepository;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
+import error.exception.PostNotFoundException;
+import error.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,7 @@ public class PostService {
 
     @Transactional
     public Long savePost(Post post, Long userId){
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Post savePost = Post.createPost(post,user);
         postRepository.save(savePost);
         return savePost.getId();
@@ -36,12 +38,12 @@ public class PostService {
     }
 
     public Post findPostById(Long id){
-        return postRepository.findById(id).orElseThrow();
+        return postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     }
 
     @Transactional
     public void updatePost(Post post,Long id){
-        Post findPost = postRepository.findById(id).orElseThrow();
+        Post findPost = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         findPost.updatePost(post.getTitle(),post.getContent(),post.getPrice(),post.getQuantity());
     }
     @Transactional
