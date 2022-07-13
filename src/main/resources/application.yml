@@ -19,7 +19,6 @@ spring:
 # 카카오 로그인 연결
 social:
   kakao:
-    client-id: {REST_API_PRIVATE_KEY}
     redirect: /oauth/kakao/redirect
     url:
       login: https://kauth.kakao.com/oauth/authorize

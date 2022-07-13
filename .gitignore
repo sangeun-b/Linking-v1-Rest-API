@@ -7,6 +7,7 @@ build/
 ### ignore yml file ###
 application-db.yml
 application-jwt.yml
+application-kakao.yml
 ### STS ###
 .apt_generated
 .classpath

@@ -1,18 +1,16 @@
 package com.example.linkingrest.user.service;
 
-import com.example.linkingrest.exception.EmailLoginFailedCException;
-import com.example.linkingrest.user.domain.Role;
+import error.exception.EmailLoginFailedException;
+import error.exception.EmailSignupFailedException;
+import error.exception.UserNotFoundException;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.PersistenceUnit;
 import java.util.List;
 
 @Service
@@ -32,22 +30,22 @@ public class UserService {
     }
 
     public User login(String email, String password){
-        User user = userRepository.findByEmail(email).orElseThrow(EmailLoginFailedCException::new);
+        User user = userRepository.findByEmail(email).orElseThrow(EmailLoginFailedException::new);
         if(!passwordEncoder.matches(password,user.getPassword()))
-            throw new EmailLoginFailedCException();
+            throw new EmailLoginFailedException();
         return user;
     }
 
     private void validationDuplicateEmail(User user){
         User findUser = userRepository.findByEmail(user.getEmail()).orElse(null);
         if(findUser != null){
-            throw new IllegalStateException("이미 등록된 이메일 입니다.");
+            throw new EmailSignupFailedException();
         }
     }
     private void validationDuplicateName(User user){
         User findUser = userRepository.findByName(user.getName()).orElse(null);
         if(findUser != null){
-            throw new IllegalStateException("이미 등록된 이름 입니다.");
+            throw new EmailSignupFailedException();
         }
     }
 
@@ -56,7 +54,7 @@ public class UserService {
     }
 
     public User findById(Long id){
-        return userRepository.findById(id).orElseThrow(()-> new IllegalStateException("존재 하지 않는 회원입니다."));
+        return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException());
     }
 
     @Transactional

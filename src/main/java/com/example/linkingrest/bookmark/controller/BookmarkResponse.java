@@ -24,6 +24,7 @@ public class BookmarkResponse {
     @Data
     @AllArgsConstructor
     static class Result<T>{
+        private int count;
         private T places;
     }
 
