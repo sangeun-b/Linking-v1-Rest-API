@@ -97,7 +97,6 @@ public class JwtProvider {
     // http request header에서 token 추출
     public String extract(HttpServletRequest request, String type){
         Enumeration<String> headers = request.getHeaders("Authorization");
-        log.info("jwt:", headers);
         while (headers.hasMoreElements()){
             String value = headers.nextElement();
             if(value.toLowerCase().startsWith(type.toLowerCase())){

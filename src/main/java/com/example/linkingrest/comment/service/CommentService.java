@@ -25,7 +25,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Long saveComment(Comment comment,Long userId,Long postId){
+    public Long saveComment(Comment comment,Long userId, Long postId){
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         comment.setUser(user);
