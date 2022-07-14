@@ -46,8 +46,8 @@ public class UserController {
     }
 
     @ApiOperation(value = "로그인", notes = "Spring Security 를 이용한 로그인")
-    @GetMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody @ApiParam(value = "로그인에 필요한 이메일과 비밀번호", required = true) @Valid LoginUserRequest request){
+    @PostMapping("/login")
+    public ResponseEntity<TokenDto> login(@RequestBody @ApiParam(value = "로그인에 필요한 이메일과 비밀번호") @Valid LoginUserRequest request){
         TokenDto token = securityService.login(request);
         return ResponseEntity.ok(token);
     }
@@ -56,36 +56,40 @@ public class UserController {
     public ResponseEntity<TokenDto> reissue(@RequestBody @ApiParam(value = "Refresh Token 재발급에 필요한 정보(access token, refresh token)") TokenRequest request) throws Exception {
         return ResponseEntity.ok(securityService.reissue(request));
     }
+    @ApiOperation(value = "전체 회원 조회", notes = "전체 회원 조회")
     @GetMapping()
     public ResponseEntity<UserResponse.Result> findUsers(){
         List<User> findUsers = userService.findUsers();
         List<UserResponse> collect = findUsers.stream()
-                .map(u -> new UserResponse(u.getId(),u.getName(),u.getEmail(),u.getPassword(),u.getImg()))
+                .map(u -> new UserResponse(u.getId(),u.getName(),u.getEmail(),u.getPassword(),u.getImg(),u.getRole().name()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new UserResponse.Result(collect.size(), collect));
     }
 
+    @ApiOperation(value = "특정 회원 조회", notes = "회원 id로 특정 회원 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> findUser(@PathVariable("id") Long id){
+    public ResponseEntity<UserResponse> findUser(@PathVariable("id") @ApiParam(value = "조회할 회원 id") Long id){
         User findUser = userService.findById(id);
-        return ResponseEntity.ok(new UserResponse(findUser.getId(),findUser.getName(),findUser.getEmail(), findUser.getPassword(), findUser.getImg()));
+        return ResponseEntity.ok(new UserResponse(findUser.getId(),findUser.getName(),findUser.getEmail(), findUser.getPassword(), findUser.getImg(),findUser.getRole().name()));
     }
 
+    @ApiOperation(value = "회원 정보 수정",notes = "회원 id로 회원 검색 후 회원 정보 업데이트")
     @PatchMapping("/{id}")
-    public ResponseEntity updateUser(@RequestBody UpdateUserRequest request, @PathVariable("id") Long id,
-                                                   @RequestParam(value = "img", required = false) MultipartFile file){
+    public ResponseEntity updateUser(@RequestBody @ApiParam(value = "수정 할 회원 정보") UpdateUserRequest request, @PathVariable("id") @ApiParam(value = "수정할 회원 id") Long id,
+                                                   @RequestParam(value = "img", required = false) @ApiParam(value = "수정 할 이미지 파일") MultipartFile file){
         User findUser = userService.findById(id);
         String name = request.getName()==null || request.getName().isBlank() ? findUser.getName():request.getName();
         String password = request.getPassword()==null || request.getPassword().isBlank() ?findUser.getPassword():request.getPassword();
         String img = request.getImg()==null || request.getImg().isBlank()?findUser.getImg(): request.getImg();
         UpdateUserRequest newUser = UpdateUserRequest.builder().name(name).password(password).img(img).build();
         userService.updateUser(newUser.toEntity(), id, file);
-        return ResponseEntity.ok("회원 수정 성공");
+        return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "회원 삭제", notes="회원 id로 회원 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity deleteUser(@PathVariable("id") @ApiParam(value = "삭젝할 회원 id") Long id){
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
