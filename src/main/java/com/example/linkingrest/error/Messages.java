@@ -1,4 +1,4 @@
-package error;
+package com.example.linkingrest.error;
 
 public class Messages {
 

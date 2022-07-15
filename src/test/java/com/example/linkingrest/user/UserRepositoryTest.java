@@ -1,5 +1,6 @@
 package com.example.linkingrest.user;
 
+import com.example.linkingrest.user.domain.Role;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Nested
-    @DisplayName("회원 가입")
+    @DisplayName("회원 가입 테스트")
     @Transactional
     class join {
         @DisplayName("회원 가입 성공")
@@ -31,6 +32,7 @@ public class UserRepositoryTest {
                     .name("user1")
                     .email("user1@email.com")
                     .password("12345")
+                    .role(Role.ROLE_MENTOR)
                     .img(null)
                     .build();
             userRepository.save(user);
@@ -43,7 +45,7 @@ public class UserRepositoryTest {
     }
 
     @Nested
-    @DisplayName("회원 조회")
+    @DisplayName("회원 조회 테스트")
     class find {
         @DisplayName("회원 목록 조회 성공")
         @Test
@@ -67,17 +69,17 @@ public class UserRepositoryTest {
         public void findByNameS() throws Exception {
             //given
             User user = User.builder()
-                    .name("user2")
+                    .name("user1")
                     .email("user1@email.com")
                     .password("12345")
                     .img(null)
                     .build();
             userRepository.save(user);
             //when
-            User findUser = userRepository.findByName(user.getName()).orElseThrow();
+            User findUser = userRepository.findByName(user.getName()).orElse(null);
 
             //then
-            assertEquals(1L, findUser.getId());
+            assertNotNull(findUser);
             assertEquals(user.getName(), findUser.getName());
         }
         @DisplayName("회원 이메일 조회 성공")
@@ -92,10 +94,10 @@ public class UserRepositoryTest {
                     .build();
             userRepository.save(user);
             //when
-            User findUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
+            User findUser = userRepository.findByEmail(user.getEmail()).orElse(null);
 
             //then
-            assertEquals(1L, findUser.getId());
+            assertNotNull(findUser);
             assertEquals(user.getEmail(), findUser.getEmail());
         }
     }

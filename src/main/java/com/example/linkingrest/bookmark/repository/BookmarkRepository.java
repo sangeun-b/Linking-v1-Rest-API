@@ -11,5 +11,6 @@ import java.util.List;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query("select distinct b from Bookmark b join fetch b.user u where u.id = :userId")
     List<Bookmark> findBookmarksByUser(Long userId);
+    @Query("select distinct b from Bookmark b join fetch b.post p where p.id = :postId")
     List<Bookmark> findBookmarkByPost(Long postId);
 }

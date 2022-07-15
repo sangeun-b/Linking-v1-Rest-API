@@ -3,6 +3,7 @@ package com.example.linkingrest.post;
 import com.example.linkingrest.post.domain.Post;
 import com.example.linkingrest.post.domain.PostType;
 import com.example.linkingrest.post.repository.PostRepository;
+import com.example.linkingrest.user.domain.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -42,6 +43,7 @@ public class PostRepositoryTest {
     @Test
     void write(){
 
+        post.setUser(User.builder().email("email@email.com").password("12345").build());
         postRepository.save(post);
         Long postId = post.getId();
         Post findPost = postRepository.findById(postId).orElse(null);

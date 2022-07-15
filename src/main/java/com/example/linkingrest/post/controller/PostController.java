@@ -2,6 +2,7 @@ package com.example.linkingrest.post.controller;
 
 import com.example.linkingrest.post.domain.Post;
 import com.example.linkingrest.post.service.PostService;
+import com.example.linkingrest.user.controller.CreateUserResponse;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,7 @@ public class PostController {
     @PostMapping("/new")
     public ResponseEntity<CreatePostResponse> savePost(@RequestBody @ApiParam(value = "댓글 작성 내용") CreatePostRequest request){
         Long id = postService.savePost(request.toEntity(),request.getUserId());
-        return ResponseEntity.ok(new CreatePostResponse(id));
+        return ResponseEntity.created(URI.create("/posts/"+id)).body(new CreatePostResponse(id));
 
     }
     @ApiOperation(value = "글 조회", notes = "글 id로 조회")

@@ -1,6 +1,6 @@
-package error;
+package com.example.linkingrest.error;
 
-import error.exception.*;
+import com.example.linkingrest.error.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

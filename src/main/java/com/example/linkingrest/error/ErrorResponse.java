@@ -1,4 +1,4 @@
-package error;
+package com.example.linkingrest.error;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

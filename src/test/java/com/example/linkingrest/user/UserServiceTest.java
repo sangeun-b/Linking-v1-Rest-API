@@ -3,6 +3,7 @@ package com.example.linkingrest.user;
 import com.example.linkingrest.user.controller.CreateUserRequest;
 import com.example.linkingrest.user.controller.CreateUserResponse;
 import com.example.linkingrest.user.controller.UserResponse;
+import com.example.linkingrest.user.domain.Role;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
 import com.example.linkingrest.user.service.UserService;
@@ -39,6 +40,7 @@ public class UserServiceTest {
             .email("user1@email.com")
             .password("12345")
             .name("user1")
+            .role(Role.ROLE_MENTOR)
             .img(null)
             .build();
 
@@ -46,6 +48,7 @@ public class UserServiceTest {
             .email("user1@email.com")
             .password("12345")
             .name("user1")
+            .role(Role.ROLE_MENTOR)
             .img(null)
             .build();
     @Nested
