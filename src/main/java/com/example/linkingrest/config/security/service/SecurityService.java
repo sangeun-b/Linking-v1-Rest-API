@@ -2,7 +2,7 @@ package com.example.linkingrest.config.security.service;
 
 import com.example.linkingrest.config.security.JwtProvider;
 import com.example.linkingrest.config.security.RefreshTokenRepository;
-import error.exception.EmailLoginFailedException;
+import com.example.linkingrest.error.exception.EmailLoginFailedException;
 import com.example.linkingrest.config.security.domain.RefreshToken;
 import com.example.linkingrest.config.security.dto.TokenDto;
 import com.example.linkingrest.config.security.dto.TokenRequest;

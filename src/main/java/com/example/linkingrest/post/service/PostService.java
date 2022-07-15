@@ -5,15 +5,12 @@ import com.example.linkingrest.post.domain.PostType;
 import com.example.linkingrest.post.repository.PostRepository;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
-import error.exception.PostNotFoundException;
-import error.exception.UserNotFoundException;
+import com.example.linkingrest.error.exception.PostNotFoundException;
+import com.example.linkingrest.error.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 
-import java.beans.PropertyEditorSupport;
 import java.util.List;
 
 @Service
@@ -55,5 +52,6 @@ public class PostService {
         return postRepository.findByTitleContainingOrContentContaining(keyword,keyword);
 
     }
+
 
 }

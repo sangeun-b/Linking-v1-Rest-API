@@ -1,8 +1,8 @@
 package com.example.linkingrest.user.service;
 
-import error.exception.EmailLoginFailedException;
-import error.exception.EmailSignupFailedException;
-import error.exception.UserNotFoundException;
+import com.example.linkingrest.error.exception.EmailLoginFailedException;
+import com.example.linkingrest.error.exception.EmailSignupFailedException;
+import com.example.linkingrest.error.exception.UserNotFoundException;
 import com.example.linkingrest.user.domain.User;
 import com.example.linkingrest.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,6 @@ public class UserService {
 
     @Transactional
     public Long join(User user){
-        System.out.println(user);
         validationDuplicateEmail(user);
         validationDuplicateName(user);
         userRepository.save(user);
