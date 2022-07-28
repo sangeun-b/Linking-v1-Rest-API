@@ -27,7 +27,7 @@ public class PostController {
 
     @ApiOperation(value = "글 작성", notes = "새 글 작성")
     @PostMapping("/new")
-    public ResponseEntity<CreatePostResponse> savePost(@RequestBody @ApiParam(value = "댓글 작성 내용") CreatePostRequest request){
+    public ResponseEntity<CreatePostResponse> savePost(@RequestBody @ApiParam(value = "공고 작성 내용") CreatePostRequest request){
         Long id = postService.savePost(request.toEntity(),request.getUserId());
         return ResponseEntity.created(URI.create("/posts/"+id)).body(new CreatePostResponse(id));
 
@@ -36,11 +36,11 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> findById(@PathVariable("id") @ApiParam(value = "조회 할 글 id") Long id){
         Post post = postService.findPostById(id);
-        return ResponseEntity.ok(new PostResponse(post.getId(),post.getTitle(),post.getContent(),post.getPrice(),post.getQuantity(),post.getPostType(),post.getUser().getId()));
+        return ResponseEntity.ok().body(new PostResponse(post.getId(),post.getTitle(),post.getContent(),post.getPrice(),post.getQuantity(),post.getPostType(),post.getUser().getId()));
     }
 
     @ApiOperation(value = "카테고리로 조회", notes = "Mentor/Mentee 카테고리로 조회")
-    @GetMapping("type/{type}")
+    @GetMapping("/category/{type}")
     public ResponseEntity<PostResponse.Result> findByType(@PathVariable("type") @ApiParam(value = "조회할 카테고리") String type) {
         List<Post> findPosts = postService.findPostsByType(type);
         List<PostResponse> collect = findPosts.stream()

@@ -2,11 +2,13 @@ package com.example.linkingrest.post.domain;
 
 import com.example.linkingrest.bookmark.domain.Bookmark;
 import com.example.linkingrest.comment.domain.Comment;
+import com.example.linkingrest.user.domain.Role;
 import com.example.linkingrest.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {
 
@@ -59,9 +62,11 @@ public class Post {
     }
     public static Post createPost(Post post, User user){
         post.setUser(user);
-        if(user.getRole().equals("ROLE_MENTOR")){
+        log.info("저장된 롤, SAVED ROLE: ", user.getRole().getAuth());
+        log.info("저장된 회원, SAVED USER: ", user);
+        if(user.getRole().getAuth().equals("ROLE_MENTOR")){
             post.postType = PostType.FIND_MENTEE;
-        } else if(user.getRole().equals("ROLE_MENTEE")){
+        } else if(user.getRole().getAuth().equals("ROLE_MENTEE")){
             post.postType = PostType.FIND_MENTOR;
         }
         return post;

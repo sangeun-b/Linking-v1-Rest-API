@@ -27,7 +27,7 @@ public class UserRepositoryTest {
     class join {
         @DisplayName("회원 가입 성공")
         @Test
-        void Save() {
+        void save() {
             User user = User.builder()
                     .name("user1")
                     .email("user1@email.com")
@@ -102,6 +102,7 @@ public class UserRepositoryTest {
         }
     }
     @DisplayName("회원 삭제")
+    @Transactional
     @Test
     public void deleteUser() {
         User user = User.builder()

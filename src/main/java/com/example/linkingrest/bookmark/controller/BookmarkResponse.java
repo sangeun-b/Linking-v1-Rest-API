@@ -31,7 +31,7 @@ public class BookmarkResponse {
     @AllArgsConstructor
     static class Result<T>{
         private int count;
-        private T places;
+        private T bookmarks;
     }
 
 }
