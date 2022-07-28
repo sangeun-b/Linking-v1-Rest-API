@@ -42,7 +42,6 @@ public class PostRepositoryTest {
     @DisplayName("글 작성")
     @Test
     void write(){
-
         post.setUser(User.builder().email("email@email.com").password("12345").build());
         postRepository.save(post);
         Long postId = post.getId();
@@ -66,7 +65,7 @@ public class PostRepositoryTest {
         }
         @DisplayName("글 카테고리로 조회")
         @Test
-        void finById(){
+        void finByCategory(){
             postRepository.save(post);
             List<Post> postList = postRepository.findByPostType(PostType.FIND_MENTOR);
             assertEquals(1,postList.size());
@@ -85,6 +84,7 @@ public class PostRepositoryTest {
         }
     }
     @DisplayName("글 삭제")
+    @Transactional
     @Test
     void deletePost(){
         postRepository.save(post);

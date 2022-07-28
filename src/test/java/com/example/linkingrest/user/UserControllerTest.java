@@ -35,6 +35,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //@WebMvcTest(controllers = UserController.class,
@@ -102,7 +103,7 @@ public class UserControllerTest {
             User user2 = User.builder()
                     .email("user2@email.com")
                     .password("2222")
-                    .name("user1")
+                    .name("user2")
                     .role(Role.ROLE_MENTOR)
                     .img(null)
                     .build();
@@ -113,9 +114,10 @@ public class UserControllerTest {
 
             //when & then
             mockMvc.perform(MockMvcRequestBuilders
-                    .get("/users")).andExpect(status().isOk()).andDo(print());
+                    .get("/users")).andExpect(status().isOk()).andExpect(jsonPath("$.users[0].name").value("user1"))
+                    .andExpect(jsonPath("$.users[1].name").value("user2")).andDo(print());
 
-            assertEquals(2,userService.findUsers().size());
+//            assertEquals(2,userService.findUsers().size());
 
 
         }
@@ -133,7 +135,7 @@ public class UserControllerTest {
             given(userService.findById(any())).willReturn(user);
             //when
             mockMvc.perform(MockMvcRequestBuilders
-                    .get("/users/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andDo(print());
+                    .get("/users/1")).andExpect(status().isOk()).andExpect(jsonPath("name").value("user1")).andDo(print());
 
             //then
             assertEquals(user,userService.findById(user.getId()));

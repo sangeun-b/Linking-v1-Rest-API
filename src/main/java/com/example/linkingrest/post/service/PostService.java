@@ -30,7 +30,13 @@ public class PostService {
     }
 
     public List<Post> findPostsByType(String type){
-        PostType postType = PostType.valueOf(type);
+        PostType postType = null;
+        if(type.toLowerCase().contains("mentor")){
+            postType = PostType.FIND_MENTOR;
+            return postRepository.findByPostType(postType);
+        }else if(type.toLowerCase().contains("mentee")){
+            postType = PostType.FIND_MENTEE;
+        }
         return postRepository.findByPostType(postType);
     }
 

@@ -38,7 +38,7 @@ public class UserResponse {
     @AllArgsConstructor
     static class Result<T>{
         private int count;
-        private T user;
+        private T users;
 
     }
 }
