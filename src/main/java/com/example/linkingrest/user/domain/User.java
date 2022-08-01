@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 public class User extends BaseTimeEntity implements UserDetails {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
