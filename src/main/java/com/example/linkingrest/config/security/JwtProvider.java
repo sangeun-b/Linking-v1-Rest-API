@@ -23,6 +23,7 @@ import java.util.Enumeration;
 @Slf4j
 @RequiredArgsConstructor
 @Component
+@PropertySource(value = "classpath:application-jwt.yml")
 public class JwtProvider {
 
     @Value("${spring.jwt.secret}")
