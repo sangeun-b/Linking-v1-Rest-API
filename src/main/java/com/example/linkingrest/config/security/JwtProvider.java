@@ -24,7 +24,7 @@ import java.util.Enumeration;
 @Component
 public class JwtProvider {
 
-    @Value("${spring.jwt.secret")
+    @Value("${spring.jwt.secret}")
     private String secretKey;
 
     private final Long accessTokenValidMillisecond = 60 * 60 * 1000L; // 1시간 토큰 유효

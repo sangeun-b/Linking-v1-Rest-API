@@ -10,11 +10,13 @@ import com.example.linkingrest.error.exception.BookmarkNotFoundException;
 import com.example.linkingrest.error.exception.PostNotFoundException;
 import com.example.linkingrest.error.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -29,6 +31,10 @@ public class BookmarkService {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         Bookmark bookmark = Bookmark.builder().user(user).post(post).build();
+        log.info("bookmark's user: ",bookmark.getUser());
+        log.info("bookmark's post: ",bookmark.getPost());
+        bookmark.setPost(post);
+        bookmark.setUser(user);
         bookmarkRepository.save(bookmark);
         return bookmark.getId();
     }

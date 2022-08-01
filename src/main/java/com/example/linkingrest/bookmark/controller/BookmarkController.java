@@ -28,7 +28,7 @@ public class BookmarkController {
     public ResponseEntity<BookmarkResponse> saveBookmark(@RequestParam(value = "userId") @ApiParam(value = "북마크 등록할 user id", required = true) Long userId,
                                                          @RequestParam(value = "postId") @ApiParam(value = "북마크 등록할 post id", required = true)Long postId){
         Long id = bookmarkService.saveBookmark(userId, postId);
-        return ResponseEntity.created(URI.create("/bookmarks/"+id)).body(new BookmarkResponse(id));
+        return ResponseEntity.created(URI.create("/bookmarks/"+id)).body(new BookmarkResponse(id,userId,postId));
     }
 
     @ApiOperation(value = "회원 별 북마크 조회", notes = "user id로 등록한 북마크 조회")
