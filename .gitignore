@@ -9,6 +9,7 @@ application-db.yml
 application-jwt.yml
 application-kakao.yml
 application-test-db.yml
+application-test-jwt.yml
 ### STS ###
 .apt_generated
 .classpath
