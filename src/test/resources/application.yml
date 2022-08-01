@@ -1,23 +1,23 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
-    username: sa
-    password:
-    drvier-class-name: org.h2.Driver
+#  datasource:
+#    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
+#    username: sa
+#    password:
+#    drvier-class-name: org.h2.Driver
   profiles:
-    include: jwt
+    include: db, jwt
 
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+#    properties:
+#      hibernate:
+#        format_sql: true
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
