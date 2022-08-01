@@ -4,6 +4,12 @@ spring:
     username: sa
     password:
     drvier-class-name: org.h2.Driver
+  profiles:
+    include: jwt
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
   jpa:
     hibernate:

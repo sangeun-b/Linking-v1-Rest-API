@@ -24,8 +24,8 @@ social:
       profile: https://kapi.kakao.com/v2/user/me
       unlink: https://kapi.kakao.com/v1/user/unlink
 
-url:
-  base: http://localhost:8080
+#url:
+#  base: http://localhost:8080
 
 
 logging:
