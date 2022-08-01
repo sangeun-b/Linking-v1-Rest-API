@@ -11,8 +11,8 @@ spring:
 
   config:
     import:
-      - classpath:/config/application-db.yml
-      - classpath:/config/application-jwt.yml
+      - classpath:application-db.yml
+      - classpath:application-jwt.yml
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
