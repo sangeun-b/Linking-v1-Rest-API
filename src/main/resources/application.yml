@@ -8,8 +8,11 @@ spring:
       database: mysql
       database-platform: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: true
-  profiles:
-    include: jwt, db
+
+  config:
+    import:
+      - classpath:/config/application-db.yml
+      - classpath:/config/application-jwt.yml
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
