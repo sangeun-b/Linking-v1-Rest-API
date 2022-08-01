@@ -7,6 +7,7 @@ spring:
         format_sql: true
       database: mysql
       database-platform: org.hibernate.dialect.MySQL8Dialect
+    defer-datasource-initialization: true
   profiles:
     include: jwt, db
   mvc:
