@@ -72,7 +72,6 @@ public class BookmarkControllerTest {
     @Test
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     public void saveBookmark() throws Exception{
-        //given
         User user = User.builder()
                 .id(1L)
                 .name("user1")
@@ -92,10 +91,7 @@ public class BookmarkControllerTest {
                 .user(user)
                 .post(post)
                 .build();
-//        given(userService.findById(any())).willReturn(user);
-//        given(postService.findPostById(any())).willReturn(post);
 
-        //when
         final ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
                 .post("/bookmarks/new").param("userId","1")
                         .param("postId","1")
@@ -112,7 +108,6 @@ public class BookmarkControllerTest {
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     @Test
     public void findByUser() throws Exception {
-        //given
         User user = User.builder()
                 .name("user1")
                 .email("user1@email.com")
@@ -144,10 +139,9 @@ public class BookmarkControllerTest {
                 .post(post2)
                 .build();
         Bookmark[] bookmarks = {bookmark,bookmark2};
-//        commentService.saveComment(comment,1L,1L);
+
         given(bookmarkService.findBookmarksByUser(any())).willReturn(List.of(bookmarks));
 
-        //when & then
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/bookmarks/users/1")).andExpect(status().isOk())
                 .andExpect(jsonPath("count").value(2))
@@ -160,7 +154,6 @@ public class BookmarkControllerTest {
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     @Test
     public void delete() throws Exception{
-        //given
         User user = User.builder()
                 .name("user1")
                 .email("user1@email.com")
@@ -181,7 +174,7 @@ public class BookmarkControllerTest {
                 .build();
         given(bookmarkService.saveBookmark(any(),any())).willReturn(bookmark.getId());
         doNothing().when(bookmarkService).deleteBookmark(bookmark.getId());
-        //when
+
         mockMvc.perform(MockMvcRequestBuilders.delete("/bookmarks/1")).andExpect(status().isNoContent()).andDo(print());
 
 

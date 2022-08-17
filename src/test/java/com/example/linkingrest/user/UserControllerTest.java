@@ -62,7 +62,6 @@ public class UserControllerTest {
     @Test
     @WithAnonymousUser
     public void saveUser() throws Exception{
-        //given
         CreateUserRequest createUserRequest = CreateUserRequest.builder()
                 .name("user1")
                 .email("user1@email.com")
@@ -74,15 +73,12 @@ public class UserControllerTest {
         given(userService.join(any())).willReturn(user.getId());
         given(userService.findById(any())).willReturn(user);
 
-        //when
         final ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
                 .post("/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createUserRequest)))
                 .andExpect(status().isCreated()).andDo(print());
 
-        //then
-        assertEquals(user.getName(),userService.findById(1L).getName());
 
     }
     @Nested
@@ -92,7 +88,6 @@ public class UserControllerTest {
         @DisplayName("모든 회원 조회")
         @Test
         public void findAll() throws Exception {
-            //given
             User user1 = User.builder()
                     .name("user1")
                     .email("user1@email.com")
@@ -107,24 +102,18 @@ public class UserControllerTest {
                     .role(Role.ROLE_MENTOR)
                     .img(null)
                     .build();
-//            userService.join(user1);
-//            userService.join(user2);
             User[] users = {user1, user2};
             given(userService.findUsers()).willReturn(List.of(users));
 
-            //when & then
             mockMvc.perform(MockMvcRequestBuilders
                     .get("/users")).andExpect(status().isOk()).andExpect(jsonPath("$.users[0].name").value("user1"))
                     .andExpect(jsonPath("$.users[1].name").value("user2")).andDo(print());
-
-//            assertEquals(2,userService.findUsers().size());
 
 
         }
         @DisplayName("회원 ID로 조회")
         @Test
         public void findUserById() throws Exception {
-            //given
             User user = User.builder()
                     .name("user1")
                     .email("user1@email.com")
@@ -133,19 +122,15 @@ public class UserControllerTest {
                     .img(null)
                     .build();
             given(userService.findById(any())).willReturn(user);
-            //when
             mockMvc.perform(MockMvcRequestBuilders
                     .get("/users/1")).andExpect(status().isOk()).andExpect(jsonPath("name").value("user1")).andDo(print());
 
-            //then
-            assertEquals(user,userService.findById(user.getId()));
         }
     }
     @DisplayName("회원 삭제")
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     @Test
     public void deleteUser() throws Exception{
-        //given
         User user = User.builder()
                 .name("user1")
                 .email("user1@email.com")
@@ -155,18 +140,14 @@ public class UserControllerTest {
                 .build();
         given(userService.join(any())).willReturn(user.getId());
         doNothing().when(userService).deleteUser(user.getId());
-        //when
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/1")).andExpect(status().isNoContent()).andDo(print());
 
-        //then
-        verify(userService,times(1)).deleteUser(1L);
 
     }
     @DisplayName("회원 정보 수정")
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     @Test
     public void updateUser() throws Exception{
-        //given
         User user = User.builder()
                 .name("user1")
 
@@ -174,7 +155,6 @@ public class UserControllerTest {
                 .role(Role.ROLE_MENTOR)
                 .img(null)
                 .build();
-//        given(userService.findById(any())).willReturn(user);
         given(userService.join(any())).willReturn(user.getId());
         User newUser = User.builder()
                 .name("user2")
@@ -184,12 +164,11 @@ public class UserControllerTest {
                 .img(null)
                 .build();;
         given(userService.findById(any())).willReturn(user);
-        //when
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/users/1").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newUser))).andExpect(status().isOk()).andDo(print());
 
-        //then
-        assertEquals(user.getName(),userService.findById(user.getId()).getName());
+
 
     }
 }

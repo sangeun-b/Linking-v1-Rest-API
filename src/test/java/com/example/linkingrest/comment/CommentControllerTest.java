@@ -166,30 +166,25 @@ public class CommentControllerTest {
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     @Test
     public void delete() throws Exception{
-        //given
         Comment comment = Comment.builder()
                 .content("추천드립니다!")
                 .rate(5)
                 .build();
         given(commentService.saveComment(any(),any(),any())).willReturn(comment.getId());
         doNothing().when(commentService).deleteComment(comment.getId());
-        //when
         mockMvc.perform(MockMvcRequestBuilders.delete("/comments/1")).andExpect(status().isNoContent()).andDo(print());
 
-        //then
-        //verify(userService,times(1)).deleteUser(1L);
 
     }
     @DisplayName("댓글 수정")
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     @Test
     public void update() throws Exception{
-        //given
         Comment comment = Comment.builder()
                 .content("추천드립니다!")
                 .rate(5)
                 .build();
-//        given(commentService.findById(any())).willReturn(comment);
+
         given(commentService.saveComment(any(),any(),any())).willReturn(comment.getId());
         given(userService.findById(any())).willReturn(User.builder().id(1L).name("user1").build());
         given(postService.findPostById(any())).willReturn(Post.builder().id(1L).content("멘토 찾기!").build());
@@ -199,12 +194,11 @@ public class CommentControllerTest {
                 .rate(5)
                 .build();
         given(commentService.findById(any())).willReturn(newComment);
-        //when
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/comments/1").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newComment))).andExpect(status().isOk()).andDo(print());
 
-//        //then
-//        assertEquals(user.getName(),userService.findById(user.getId()).getName());
+
 
     }
 }
