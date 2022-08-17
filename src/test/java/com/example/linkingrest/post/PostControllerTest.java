@@ -200,14 +200,13 @@ public class PostControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/posts/1")).andExpect(status().isNoContent()).andDo(print());
 
         //then
-        verify(postService,times(1)).deletePost(1L);
+        //verify(postService,times(1)).deletePost(1L);
 
     }
     @DisplayName("글 수정")
     @WithMockUser(username = "test",password = "123",roles = {"MENTOR"})
     @Test
     public void update() throws Exception{
-        //given
         Post post_mentor = Post.builder()
                 .title("멘토!!")
                 .content("멘토님 구합니다")
@@ -215,7 +214,7 @@ public class PostControllerTest {
                 .quantity("5회")
                 .postType(PostType.FIND_MENTOR)
                 .build();
-//        given(userService.findById(any())).willReturn(user);
+
         given(postService.savePost(any(),any())).willReturn(post_mentor.getId());
         postService.savePost(post_mentor,1L);
         Post newPost =  Post.builder()
@@ -226,12 +225,11 @@ public class PostControllerTest {
                 .postType(PostType.FIND_MENTOR)
                 .build();
         given(postService.findPostById(any())).willReturn(newPost);
-        //when
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/posts/1").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newPost))).andExpect(status().isOk()).andDo(print());
 
-//        //then
-//        assertEquals(newPost.getTitle(),postService.findPostById(newPost.getId()).getTitle());
+
 
     }
 
